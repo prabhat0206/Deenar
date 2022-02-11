@@ -52,6 +52,7 @@ class Wishlist(Resource):
         return {"Success": False, "message": "Something went wrong"}
 
 
+
 class CartAPI(Resource):
     
     @auth.login_required()
