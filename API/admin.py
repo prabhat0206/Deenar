@@ -32,7 +32,7 @@ def admin_required(next):
 class ChangeCondition(Resource):
     def post(self):
         data = request.args
-        product = Product.query.filter_by(product_id=int(data['product_id'])).first()
+        product = Product.query.filter_by(product_id=int(data['pid'])).first()
         if 'is_most_sell' in data:
             product.isMostSelling = int(data.get('is_most_sell'))
         if 'is_top_sell' in data:
