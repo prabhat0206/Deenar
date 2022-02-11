@@ -8,7 +8,7 @@ class User(db.Model):
     token = db.Column(db.String, nullable=False)
     address = db.relationship('Address', backref='address',cascade="all, delete-orphan")
     cart = db.relationship('Cart', backref='cart',cascade="all, delete-orphan")
-    wishlist = db.relationship('Product', backref='wishlist',cascade="all, delete-orphan")
+    wishlist = db.relationship('Product', backref='wishlist')
     orders = db.relationship('Order', backref='order_by', cascade="all, delete-orphan")
 
 
