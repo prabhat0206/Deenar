@@ -9,7 +9,7 @@ from .config import ADMIN_EMAIL, ADMIN_PASSWORD
 admin = Blueprint('admin', __name__)
 api = Api(admin)
 
-
+print(ADMIN_EMAIL, ADMIN_PASSWORD)
 def admin_required(next):
     @wraps(next)
     def check_admin(*args, **kwargs):
@@ -17,6 +17,7 @@ def admin_required(next):
             credentails = parse_authorization_header(
                 request.headers.get('Authorization')
             )
+            print(credentails)
             if credentails.password and credentails.username is not None:
                 if credentails.username == ADMIN_EMAIL and credentails.password == ADMIN_PASSWORD:
                     return next(*args, **kwargs)
