@@ -1,8 +1,9 @@
 from flask import Blueprint, request, abort
 from flask_restful import Api, Resource
-from functools import wraps
+# from functools import wraps
 from . import db, get_model_dict, auth
 from .model import User, Address
+from .config import TOKEN
 
 account_api = Blueprint('account_api', __name__)
 api = Api(account_api)
@@ -13,7 +14,7 @@ class Login(Resource):
     def post(self):
         if request.headers.get('Authorization') is not None:
             token = request.headers.get('Authorization').replace("Bearer ", "")
-            if token == "thisisnewtoken":
+            if token == TOKEN:
                 data = request.get_json()
                 ph_number = data['ph_number']
                 token = data['token']
@@ -34,7 +35,7 @@ class Register(Resource):
     def post(self):
         if request.headers.get('Authorization') is not None:
             token = request.headers.get('Authorization').replace("Bearer ", "")
-            if token == "thisisnewtoken":
+            if token == TOKEN:
                 data = request.get_json()
                 ph_number = data['ph_number']
                 name = data['name']
