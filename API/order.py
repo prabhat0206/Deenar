@@ -184,7 +184,6 @@ class OrderAPI(Resource):
     @auth.login_required()
     def post(self):
         data = request.get_json()
-        print(data)
         date = datetime.now().date()
         payment_mode = data['payment_mode']
         token = data['token']
