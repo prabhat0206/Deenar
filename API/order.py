@@ -138,7 +138,6 @@ class OrderAPI(Resource):
             order_dic = get_model_dict(order)
             del order_dic['uid']
             del order_dic['date']
-            del order_dic['delivery_by']
             del order_dic['address_id']
             new_Address = order.address_id.split(',')
             order_dic['phone'] = new_Address[0]
@@ -163,7 +162,6 @@ class OrderAPI(Resource):
             order_dic = get_model_dict(order)
             del order_dic['uid']
             del order_dic['date']
-            del order_dic['delivery_by']
             del order_dic['address_id']
             new_Address = order.address_id.split(',')
             order_dic['phone'] = new_Address[0]
