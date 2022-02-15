@@ -498,6 +498,14 @@ class BannerAdmin(Resource):
         db.session.add(banner)
         db.session.commit()
         return {"Success": True, "Banners": get_model_dict(banner)}
+    
+    @admin_required
+    def delete(self):
+        data = request.args
+        banner = Banner.query.filter_by(id=int(data.get('id'))).first()
+        db.session.delete(banner)
+        db.session.commit()
+        return {"Success": True}
 
 
 
