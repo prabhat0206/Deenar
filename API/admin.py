@@ -2,7 +2,7 @@ from flask import Blueprint, request, abort
 from flask_restful import Resource, Api
 from functools import wraps
 from werkzeug.http import parse_authorization_header
-from .model import Order, Product, Category, Brand, User, Coupon
+from .model import Banner, Order, Product, Category, Brand, User, Coupon
 from . import get_model_dict, db
 from .config import ADMIN_EMAIL, ADMIN_PASSWORD
 
@@ -482,6 +482,25 @@ class CouponAdmin(Resource):
         return {"Success": True}
 
 
+class BannerAdmin(Resource):
+
+    def get(self):
+        banners = Banner.query.order_by(Banner.id.desc()).all()
+        all_banners = []
+        for banner in banners:
+            all_banners.append(get_model_dict(banner))
+        return {"Success": True, "Banners": all_banners}
+    
+    @admin_required
+    def post(self):
+        data = request.args
+        banner = Banner(image_url=data.get('image_url'))
+        db.session.add(banner)
+        db.session.commit()
+        return {"Success": True, "Banners": get_model_dict(banner)}
+
+
+
 api.add_resource(ProductHandler, '/product', endpoint="product")
 api.add_resource(CategoryHandler, '/category', endpoint="category")
 api.add_resource(BrandHandler, '/brand', endpoint="brand")
@@ -491,3 +510,4 @@ api.add_resource(Statistics, '/statistics', endpoint="statistics")
 api.add_resource(ChangeCondition, '/change_condition', endpoint="change_condition")
 api.add_resource(CouponAdmin, '/coupons', endpoint="coupons")
 api.add_resource(GetOrderbyStatus, '/get_order_by_status/<status>', endpoint="get_order_by")
+api.add_resource(BannerAdmin, '/banner', endpoint="banner-admin")

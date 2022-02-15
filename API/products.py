@@ -4,7 +4,6 @@ from .model import *
 from . import get_model_dict
 from sqlalchemy import or_
 import random
-from datetime import date
 
 
 product_api = Blueprint('product', __name__)
@@ -160,7 +159,15 @@ class CouponsAPI(Resource):
         else:
             return {"Success": False, "error": "not found"}
 
-        
+
+class BannerAPI(Resource):
+
+    def get(self):
+        banners = Banner.query.order_by(Banner.id.desc()).all()
+        all_banners = []
+        for banner in banners:
+            all_banners.append(get_model_dict(banner))
+        return {"Success": True, "Banners": all_banners}        
 
 
 api.add_resource(CategoryAPI, '/categories')
@@ -171,4 +178,4 @@ api.add_resource(SearchProduct, '/search/<word>')
 api.add_resource(ProductDetailsAPi, "/product/<product_id>")
 api.add_resource(CouponAPI, '/coupon/<coupon_id>')
 api.add_resource(CouponsAPI, '/coupons')
-
+api.add_resource(BannerAPI, '/banners')

@@ -103,3 +103,9 @@ class Coupon(db.Model):
     percentage = db.Column(db.String)
     # valid_till = db.Column(db.Date)
     # date = db.Column(db.Date)
+
+
+class Banner(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_url = db.Column(db.String, nullable=False)
+
