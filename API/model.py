@@ -109,3 +109,9 @@ class Banner(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_url = db.Column(db.String, nullable=False)
 
+
+class Notification(db.Model):
+    nid = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer)
+    datetime = db.Column(db.String)
+    message = db.Column(db.String)

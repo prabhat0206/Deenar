@@ -2,8 +2,9 @@ from flask import Blueprint, request, abort
 from flask_restful import Resource, Api
 from functools import wraps
 from werkzeug.http import parse_authorization_header
-from .model import Banner, Order, Product, Category, Brand, User, Coupon
 from . import get_model_dict, db
+from .model import *
+from datetime import datetime
 from .config import ADMIN_EMAIL, ADMIN_PASSWORD
 
 admin = Blueprint('admin', __name__)
@@ -508,6 +509,17 @@ class BannerAdmin(Resource):
         return {"Success": True}
 
 
+class PostNotification(Resource):
+
+    @admin_required
+    def post(self):
+        data = request.get_json()
+        order = Order.query.filter_by(oid=data['oid']).first()
+        new_Notification = Notification(uid=order.uid, message=data['message'], datetime=str(datetime.now()))
+        db.session.add(new_Notification)
+        db.session.commit()
+        return {"Success": True}
+
 
 api.add_resource(ProductHandler, '/product', endpoint="product")
 api.add_resource(CategoryHandler, '/category', endpoint="category")
@@ -519,3 +531,4 @@ api.add_resource(ChangeCondition, '/change_condition', endpoint="change_conditio
 api.add_resource(CouponAdmin, '/coupons', endpoint="coupons")
 api.add_resource(GetOrderbyStatus, '/get_order_by_status/<status>', endpoint="get_order_by")
 api.add_resource(BannerAdmin, '/banner', endpoint="banner")
+api.add_resource(PostNotification, '/post_notification', endpoint="post_notification")

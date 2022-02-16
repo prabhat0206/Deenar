@@ -2,7 +2,7 @@ from flask import Blueprint, request, abort
 from flask_restful import Api, Resource
 # from functools import wraps
 from . import db, get_model_dict, auth
-from .model import User, Address
+from .model import *
 from .config import TOKEN
 
 account_api = Blueprint('account_api', __name__)
@@ -142,8 +142,21 @@ class GETUSERDATA(Resource):
         return {"Success": True, "user": get_model_dict(user)}
 
 
+class GetNotification(Resource):
+    
+    @auth.login_required()
+    def get(self):
+        notifications = Notification.query.filter_by(uid=auth.current_user()).order_by(Notification.nid.desc()).all()
+        all_notifications = []
+        for notification in notifications:
+            new_NOTIFICATION = get_model_dict(notification)
+            del new_NOTIFICATION['uid']
+            all_notifications.append(new_NOTIFICATION)
+        return {"Success": True, "notifications": all_notifications}
+
 api.add_resource(Login, "/auth/login")
 api.add_resource(Register, "/auth/register")
 api.add_resource(AddressAPI, "/profile/address")
 api.add_resource(GETUSERDATA, "/profile")
+api.add_resource(GetNotification, '/profile/notification')
 
