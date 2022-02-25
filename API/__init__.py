@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_httpauth import HTTPTokenAuth
 import razorpay
+from .config import RZ_KEY, RZ_SECRET
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -17,7 +18,7 @@ CORS(app)
 db.init_app(app)
 migrate.init_app(app, db)
 
-client = razorpay.Client(auth=("rzp_test_UMa6yf81WrbG64", "NmsNCnwSVk17kgF8BOSCxxW0"))
+client = razorpay.Client(auth=(RZ_KEY, RZ_SECRET))
 
 
 def get_model_dict(model):
